@@ -1,0 +1,11 @@
+body 
+{
+    height:100%;
+    background-image: url('https://static.javatpoint.com/university/images/thapar-university.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+    opacity: 1;
+    -ms-overflow-style: none;
+}
+

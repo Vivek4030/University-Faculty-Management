@@ -1,0 +1,536 @@
+<!-- Renders member cards on members Page -->
+<div *ngIf="clickedMemberId === null">
+  <div
+    class="card shadow mb-3"
+    style="max-width: 540px; min-height: 190px"
+    [class.shadow]="mouseOvered"
+    (mouseover)="mouseOvered = true"
+    (mouseout)="mouseOvered = false"
+    role="button"
+    (click)="onMemberClick(member)"
+  >
+    <div class="card-img" >
+      <img
+          [src]="memberCardInfo.profilePic"
+          class="img-fluid rounded-start"
+          [alt]="memberCardInfo.fullName"
+      />
+    </div>
+    <h3><strong>{{ memberCardInfo.fullName | titlecase }}</strong></h3>
+    <p>
+      {{ memberCardInfo.designation | titlecase }},<br>
+      Department of {{memberCardInfo.department | titlecase }}<br>
+      Shri Mata Vaishno Devi University
+    </p>
+    <div class="rule">
+      <div class="footer">
+        <button *ngIf="isAdmin"
+            type="button"
+            class="mx-3"
+            mat-raised-button
+            color="primary"
+            (click)="onEditClick(memberCardInfo, $event)"
+            onclick="this.blur();"
+          >
+            <mat-icon>edit</mat-icon> Edit
+          </button>
+          <button *ngIf="isAdmin"
+            type="button"
+            mat-stroked-button
+            color="warn"
+            data-testid="delete-button"
+            (click)="onDeleteMember(memberCardInfo.id, $event)"
+            onclick="this.blur();"
+          >
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+      </div>
+    </div>
+  </div>
+</div>  
+
+<ng-container *ngIf="clickedMemberId !== null">
+  <header id="header">
+    <div id="hgroup">
+      <h1>{{ memberCardInfo.fullName | titlecase}}</h1>
+      <h3>
+        {{ memberCardInfo.designation | titlecase}}<br>
+        Department of {{ memberCardInfo.department | titlecase}}
+      </h3>
+    </div>
+  </header>
+  <article id="body">
+    <section id="left">
+      <header>
+          <img [src]="memberCardInfo.profilePic" [alt]="memberCardInfo.fullName | titlecase">
+      </header>
+      <div id="main-sidebar">
+        <h3 class="header">{{ memberCardInfo.fullName | titlecase}}</h3>
+        <div class="address">
+          {{ memberCardInfo.addressLine1 | titlecase}}<br>
+          <ng-container *ngIf="memberCardInfo.addressLine2 && memberCardInfo.addressLine2 !== ''">
+            {{ memberCardInfo.addressLine2 | titlecase}}<br>
+          </ng-container>
+          {{ memberCardInfo.city | titlecase}}, {{ memberCardInfo.state | titlecase}}<br>
+          {{ memberCardInfo.phone | titlecase}}<br>
+          <a href="mailto:{{memberCardInfo.email}}" title="Send email.">{{ memberCardInfo.email }}</a><br>
+        </div>
+        <h3 class="header">Links</h3>
+        <div class="Links">
+          <ng-container *ngIf="memberCardInfo.googleScholar && memberCardInfo.googleScholar !== ''">
+            <a href="{{ memberCardInfo.googleScholar }}" data-rel="ext"
+              target="_blank">Google Scholar</a><br>
+          </ng-container>
+          <ng-container *ngIf="memberCardInfo.researchGate && memberCardInfo.researchGate !== ''">
+            <a href="{{ memberCardInfo.researchGate }}" data-rel="ext"
+              target="_blank">Research Gate</a><br>
+          </ng-container>
+          <ng-container *ngIf="memberCardInfo.cv && memberCardInfo.cv !== ''">
+            <a href="{{ memberCardInfo.cv }}" data-rel="">CV</a><br>
+          </ng-container>
+        </div>
+
+      </div>
+    </section>
+    <section id="main">
+      <div id="education">
+        <h2>Education</h2>
+        <ul>
+          <ng-container *ngFor="let degree of memberCardInfo.education.split('&')">
+            <li *ngIf="degree!== ''">{{ degree.trim() }}</li>
+          </ng-container>
+        </ul>
+      </div>
+      <div id="interest-areas">
+        <h2>Current Interest Areas</h2>
+        <ul>
+          <ng-container *ngFor="let interest of memberCardInfo.interests.split('&')">
+            <li *ngIf="interest!== ''">{{ interest.trim() | titlecase }}</li>
+          </ng-container>
+        </ul>
+      </div>
+      <ng-container *ngIf="memberCardInfo.publications && memberCardInfo.publications.split('&').length - 1 !== memberCardInfo.publications.length">
+        <div id="publications">
+          <h2>Publications</h2>
+          <ul>
+            <ng-container *ngFor="let publication of memberCardInfo.publications.split('&')">
+              <ng-container *ngIf="publication !== ''">
+                <li >{{ publication.trim() }}</li><br>
+              </ng-container>
+            </ng-container>
+          </ul>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="memberCardInfo.projects && memberCardInfo.projects.split('&').length - 1 !== memberCardInfo.projects.length">
+          <div id="projects">
+            <h2>Projects</h2>
+            <ul>
+              <ng-container *ngFor="let project of memberCardInfo.projects.split('&')">
+                <li *ngIf="project !== ''">{{ project.trim() }}</li>
+              </ng-container>
+            </ul>
+          </div>
+        </ng-container>
+      <ng-container *ngIf="memberCardInfo.honors && memberCardInfo.honors.split('&').length - 1 !== memberCardInfo.honors.length">
+        <div id="honors">
+          <h2>Significant Honors</h2>
+          <ul>
+            <ng-container *ngFor="let honor of memberCardInfo.honors.split('&')">
+              <li *ngIf="honor!== ''"><a href="{{honor.split('@')[1].trim()}}" >
+                {{ honor.split('@')[0].trim() }}
+              </a></li>
+            </ng-container>
+          </ul>
+        </div>
+      </ng-container>
+        <ng-container *ngIf="memberCardInfo.achievements && memberCardInfo.achievements.split('&').length - 1 !== memberCardInfo.achievements.length">
+          <div id="achievements">
+            <h2>Achievements</h2>
+            <ul>
+              <ng-container *ngFor="let achievement of memberCardInfo.achievements.split('&')">
+                <li *ngIf="achievement !== ''">{{ achievement.trim() }}</li>
+              </ng-container>
+            </ul>
+          </div>
+        </ng-container>
+    </section>
+  </article>
+</ng-container>
+
+
+
+
+<!-- Modal containing Edit Book Form -->
+<div class="modal fade show" [class.show]="showModal" data-testid="edit-form">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Member Info</h5>
+        <button
+          (click)="onCloseModal()"
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="memberForm" (ngSubmit)="onUpdateMemberSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Choose Type</mat-label>
+              <select matNativeControl required formControlName="type">
+                <option label="--select something --"></option>
+                <option value="faculty">Faculty</option>
+                <option value="scholar">Scholar</option>
+              </select>
+              <mat-error *ngIf="
+                  !memberForm.get('type')!.valid && memberForm.get('type')!.touched
+                ">Please choose a type</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="fullName"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('fullName')!.valid && memberForm.get('fullName')!.touched
+                "
+                >Please Enter Your Name.</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Profile Pic</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="profilePic"
+                placeholder="Enter the drive link of your profile picture"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Address Line 1</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="addressLine1"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('addressLine1')!.valid &&
+                  memberForm.get('addressLine1')!.touched
+                "
+                >Please enter your address</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Address Line 2</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="addressLine2"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>City</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="city"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('city')!.valid &&
+                  memberForm.get('city')!.touched
+                "
+                >Please enter your city</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>State</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="state"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('state')!.valid &&
+                  memberForm.get('state')!.touched
+                "
+                >Please enter your State</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Phone No.</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="phone"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('phone')!.valid &&
+                  memberForm.get('phone')!.touched
+                "
+                >Please enter your contact number</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Email Address</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="email"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('email')!.valid &&
+                  memberForm.get('email')!.touched
+                "
+                >Please enter your email id</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Your Designation</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="designation"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('designation')!.valid &&
+                  memberForm.get('designation')!.touched
+                "
+                >Please enter your designation</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Your Department</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="department"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  !memberForm.get('department')!.valid &&
+                  memberForm.get('department')!.touched
+                "
+                >Please enter your department</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Google Scholar Link (if any)</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="googleScholar"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Research Gate Link (if any)</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="researchGate"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Your CV Link</mat-label>
+              <input
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="cv"
+                placeholder="Enter google drive link of your CV"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Education Details</mat-label>
+              <textarea
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="education"
+                required >
+              </textarea>
+              <mat-hint align="end">Enter your education degree details each separated by &</mat-hint>
+              <mat-error
+                *ngIf="
+                  !memberForm.get('education')!.valid &&
+                  memberForm.get('education')!.touched
+                "
+                >Please enter your education details</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Current Interest Areas</mat-label>
+              <textarea
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="interests"
+                required >
+              </textarea>
+              <mat-hint align="end">Enter your all your interests each separated by a &</mat-hint>
+              <mat-error
+                *ngIf="
+                  !memberForm.get('interests')!.valid &&
+                  memberForm.get('interests')!.touched
+                "
+                >Please enter your current interest areas</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Significant Honors (if any)</mat-label>
+              <textarea
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="honors"
+                placeholder="Enter some of your significant honors each separated by a &" >
+              </textarea>
+              <mat-hint align="end">Format: Honors title name @ relevant link each separated by &</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Publications (if any)</mat-label>
+              <textarea
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="publications">
+              </textarea>
+              <mat-hint align="end">Enter all your publications each separated by a &</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Projects (if any)</mat-label>
+              <textarea
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="projects">
+              </textarea>
+              <mat-hint align="end">Enter all your projects each separated by a &</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Achievements</mat-label>
+              <textarea
+                matInput
+                type="text"
+                class="form-control"
+                formControlName="achievements">
+              </textarea>
+              <mat-hint align="end">Enter all your achievements each separated by a &</mat-hint>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button
+            mat-raised-button
+            color="primary"
+            data-testid="submit-button"
+            (click)="onUpdateMemberSubmit()"
+            type="reset"
+            class="mx-3"
+            [disabled]="!this.memberForm.valid"
+          >
+            Update Member
+          </button>
+          <button
+            data-testid="close-button"
+            mat-raised-button
+            type="button"
+            (click)="onCloseModal()"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

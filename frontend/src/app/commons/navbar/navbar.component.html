@@ -1,0 +1,21 @@
+<mat-toolbar class="navbar">
+<div class="tabs">
+    <button mat-button routerLink="">HOME
+    </button>
+    <button mat-button routerLink="/about">ABOUT US
+    </button>
+    <button mat-button routerLink="/members/faculty" >FACULTY
+    </button>
+    <button mat-button routerLink="/members/scholar" >SCHOLARS
+    </button>
+    <button mat-button routerLink="/contact" >CONTACT US
+    </button>
+    <ng-container *ngIf="isAuthenticated()">
+      <button  mat-button (click)="logout()" >LOG OUT</button>
+    </ng-container>
+    <!-- <ng-container *ngIf="!isAuthenticated()">
+      <button  mat-button routerLink="/login" >LOG In</button>
+    </ng-container> -->
+</div>
+</mat-toolbar>
+<mat-divider [inset]="true"></mat-divider>

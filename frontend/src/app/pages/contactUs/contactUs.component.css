@@ -1,0 +1,17 @@
+mat-form-field 
+{
+    width: 40%;
+    
+    padding-bottom: 0.5rem;
+
+    margin-bottom: 10px;
+}
+
+mat-error
+{
+    font-size: 12px;
+}
+
+.form-control:focus {
+    box-shadow: unset;
+}
